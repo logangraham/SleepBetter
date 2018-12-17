@@ -1,4 +1,4 @@
-# Pediatric Sleep Apnea Prediction
+# SleepBetter: Pediatric Sleep Apnea Prediction
 Code for our upcoming paper on predicting pediatric obstructivecontains on sleep apnea (OSA).
 Using relatively generic machine learning techniques, and straightforward feature engineering, we can outperform the nearest clinician baseline for risk-prioritizing children for full sleep study analysis.
 We leverage a new and proprietary dataset for this use case.
@@ -30,6 +30,7 @@ Coming very soon!
 ## TODO
 
 - [ ] Check, re-factor eval pipeline
+- [ ] Finalize Results
 - [ ] Implement explicit model averaging
 - [ ] Consider SMOTE / synthetic data for marginal performance boosts
 - [ ] Find clinician heuristics newer than Kang et al. 2015
