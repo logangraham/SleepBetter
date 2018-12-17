@@ -26,3 +26,11 @@ We are left with only 3 variables.
 
 ## Results
 Coming very soon!
+
+## TODO
+
+- [ ] Check, re-factor eval pipeline
+- [ ] Implement explicit model averaging
+- [ ] Consider SMOTE / synthetic data for marginal performance boosts
+- [ ] Find clinician heuristics newer than Kang et al. 2015
+- [ ] Comment on statistical power given small data & cross-val optimization

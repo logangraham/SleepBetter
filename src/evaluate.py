@@ -11,6 +11,7 @@ def get_optimal_models(data, models):
         optimal_models.append(m)
     return optimal_models
 
+
 def run_k_fold(data, trained_model, append=False, k=10):
     """
     Runs `k` Kfold predictions.
@@ -28,6 +29,7 @@ def run_k_fold(data, trained_model, append=False, k=10):
     return np.hstack((np.array(y_preds).reshape(-1, 1),
                       np.array(y_tests).reshape(-1, 1)))
 
+
 def get_average_roc_results(data, optimized_models, k=10, plot=True):
     """
     Predicts on `k` validation sets, finds the total AUC of each, and plots the
@@ -40,12 +42,14 @@ def get_average_roc_results(data, optimized_models, k=10, plot=True):
         model_results.append((model.name, auc))
     return model_results
 
+
 def model_auc(y_true, y_pred, name=None, plot=True):
     auc = roc_auc_score(y_true, y_pred)
     if plot:
         fpr, tpr, _ = roc_curve(y_true, y_pred)
         plt.plot(fpr, tpr, label='(%0.2f) %s' % roc_auc[2], name)
     return auc
+
 
 def evaluate(data_types, models, k=10):
     # iterate over datatypes
