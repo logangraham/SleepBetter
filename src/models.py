@@ -13,7 +13,7 @@ from catboost import CatBoostClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import GridSearchCV
 from tpot import TPOTClassifier
-from points_model import *
+# from points_model import *
 
 
 class ModelParamObject(object):
@@ -92,20 +92,20 @@ class ModelParamObject(object):
         In the classification setting: return simplex-constrained logits of
         predictions.
         """
-        return self.model.predict_proba(X)
+        one_index = np.where(self.model.classes_ == 1.)[0]
+        return self.model.predict_proba(X)[:, one_index]
 
+# class KangModelParam(ModelParamObject):
+#     """
+#     The model class for the Kang et al. (2015) logistic-regression-based
+#     points-based model.
+#     """
+#     def __init__(self):
+#         ModelParamObject.__init__(self)
+#         self.model = PointsModel()
 
-class KangModelParam(ModelParamObject):
-    """
-    The model class for the Kang et al. (2015) logistic-regression-based
-    points-based model.
-    """
-    def __init__(self):
-        ModelParamObject.__init__(self)
-        self.model = PointsModel()
-
-    def optimize(self, X, y):
-        self.fit(X, y)
+#     def optimize(self, X, y):
+#         self.fit(X, y)
 
 
 class RFModelParam(ModelParamObject):
@@ -134,7 +134,7 @@ class LRCVModelParam(ModelParamObject):
 
     def __init__(self):
         ModelParamObject.__init__(self)
-        self.model = LogisticRegressionCV()
+        self.model = LogisticRegressionCV(solver='lbfgs')
 
     def initialize_params(self, X):
         self.params = {"penalty": ['l2','l1'],
@@ -149,7 +149,7 @@ class LRModelParam(ModelParamObject):
 
     def __init__(self):
         ModelParamObject.__init__(self)
-        self.model = LogisticRegression()
+        self.model = LogisticRegression(solver='lbfgs')
 
     def initialize_params(self, X):
         self.params = {"C": [1e10]}
@@ -161,7 +161,7 @@ class SVMModelParam(ModelParamObject):
     """
     def __init__(self):
         ModelParamObject.__init__(self)
-        self.model = SVC()
+        self.model = SVC(gamma='scale', probability=True)
 
     def initialize_params(self, X):
         self.params = {"C": self.C_scale,
@@ -193,6 +193,9 @@ class CatBoostModelParam(ModelParamObject):
         else:
             self.params['cat_features'] = [None]
 
+    def predict_proba(self, X):
+        return self.model.predict_proba(X)
+
 class NaiveBayesModelParam(ModelParamObject):
     """
     Naive Bayes classifier.
@@ -203,7 +206,7 @@ class NaiveBayesModelParam(ModelParamObject):
         self.model = GaussianNB()
 
 
-class GaussianProcessClassifier(ModelParamObject):
+class GPModelParam(ModelParamObject):
     """
     Gaussian process classifier
     """
@@ -268,3 +271,6 @@ class TPOTModelParam(ModelParamObject):
         print("Performing TPOT genetic optimization.")
         self.model.fit(X, y)
         self.optimized = True
+
+    def predict_proba(self, X):
+        return self.model.predict_proba(X)
