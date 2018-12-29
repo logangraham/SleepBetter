@@ -258,9 +258,9 @@ class GPModelParam(ModelParamObject):
 
 
 class TPOTModelParam(ModelParamObject):
-    def __init__(self):
+    def __init__(self, **kwargs):
         ModelParamObject.__init__(self)
-        self.model = TPOTClassifier(verbosity=2, max_time_mins=0.5)
+        self.model = TPOTClassifier(**kwargs)
         self.fitted = False
         self.to_grid_search = False
 

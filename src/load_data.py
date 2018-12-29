@@ -13,20 +13,27 @@ def load_data(filepath=None):
     return df
 
 
-def subset_columns(df, variable_class='all'):
+def subset_columns(df, variable_class='all', target_column_prefix='ahi'):
+    all_cols = list(df.columns)
+    Y = None
+    if target_column_prefix:
+        target_cols = [i for i in filter(lambda x: target_column_prefix in x, all_cols)]
+        Y = df[target_cols]
+        df = df[[i for i in df.columns if i not in target_cols]]
     if variable_class == 'all':
-        return df
+        cols = df.columns
     elif variable_class == 'medical':
         med_cols = ['nrem', 'rem', 'sleepefficiency', 'arousali', 'tst50co2',
                     'zscore', 'lowsao2', 'peakc02', 'tb90']
-        return df[med_cols]
+        cols = med_cols
     elif variable_class == 'non_medical':
         non_med_cols = ['gender', 'ethnicity', 'term', 'bmi', 'age',
                         'allergies', 'asthma', 'gerd', 'tonsilsize', 'zscore']
-        return df[non_med_cols]
+        cols = non_med_cols
     else:
         raise ValueError("""`variable_class` has to be one of `all`, `medical',
                          or `non_medical`.""")
+    return df[cols], Y
 
 def create_targets(y, target_col='ahi', target_thresholds=[5, 10, 24]):
     targets = {}
