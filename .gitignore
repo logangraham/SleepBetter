@@ -1,0 +1,19 @@
+# Folders
+
+notebooks/
+data/
+catboost_info/
+__pycache__/
+.ipynb_checkpoints/
+
+# FILETYPES
+*.ipynb
+*.txt
+
+# DATA FILETYPES
+*.csv
+*.xls
+*.xlsx
+
+# OUTPUT FILETYPES
+*.pdf
